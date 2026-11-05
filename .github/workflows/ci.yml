@@ -1,0 +1,30 @@
+name: Python CI
+
+"on":
+  push:
+  pull_request:
+
+jobs:
+  quality-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar código
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+
+      - name: Instalar Poetry
+        run: pip install poetry
+
+      - name: Instalar dependencias
+        run: poetry install
+
+      - name: Revisar estilo con Ruff
+        run: poetry run ruff check .
+
+      - name: Ejecutar pruebas
+        run: poetry run pytest -v
